@@ -1,0 +1,3 @@
+[submodule "vendor/f1"]
+	path = vendor/f1
+	url = git://github.com/icastillo/f1api-php.git
