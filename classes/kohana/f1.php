@@ -3,7 +3,7 @@
 class Kohana_F1
 {
 	
-	public $request_url, $request_body, $content_type, $f1_config;
+	public $request_url, $request_body, $content_type, $f1config, $_session;
 	
 	private $password;
 	
@@ -18,16 +18,10 @@ class Kohana_F1
 		require_once Kohana::find_file('vendor', 'f1/f1_signer');
 	}
 	
-	public function before()
-	{
-		// Load nothing for now
-	}
-	
-	public function authenticate_user($email, $password)
+	public function authenticate_user($username, $password)
 	{
 		// Separate domain from username for authenticating			
-		$explode_user_name = explode('@', $email);
-		$user_name = trim($explode_user_name[0]);
+		
 		
 		$this->f1_config = Kohana::config('f1');
 		
@@ -35,7 +29,7 @@ class Kohana_F1
 		$this->request_url = $this->f1_config['base_url'] . $this->f1_config['accesstoken_path'];
 		
 		// Create request body per f1 documentation and examples
-		$this->request_body = rawurlencode(base64_encode($user_name . ' ' . $password));
+		$this->request_body = rawurlencode(base64_encode($username . ' ' . $password));
 		$this->request_body = str_replace('%7E', '~', $this->request_body);
 		$this->request_body = str_replace('+', ' ', $this->request_body);
 		
@@ -56,44 +50,50 @@ class Kohana_F1
 			 */
 			// Get response headers
 			$response_headers = $api_consumer->getResponseHeader();
-			throw new Exception('Username and/or Password invalid');
+			
+			//var_dump($response_headers);
+			
+			$status = Helper_Needle::find_header('HTTP/1.1 400 Bad Request ', $response_headers);
+			
+			throw new Kohana_Exception($status);
 		
 		} else {
-			$access_token = $tokens[1];
-			$token_secret = $tokens[2];
 			
-			$api_consumer->initAccessToken($access_token, $token_secret);
+			$_session = Session::instance();
+			
+			$_session->set('access_token', $tokens[1]);
+			$_session->set('token_secret', $tokens[2]);
+			
+			//$access_token = $tokens[1];
+			//$token_secret = $tokens[2];
+			
+			// Load access_token and token_secret in session
+			// $api_consumer->initAccessToken($access_token, $token_secret);
+			$api_consumer->initAccessToken($_session->get('access_token'), $_session->get('token_secret'));
+			
+			#var_dump($api_consumer);
 			
 			// Get response headers
-			$response_headers = $api_consumer->getResponseHeader();
+			#$response_headers = $api_consumer->getResponseHeader();
+						
+			#$person_location = Helper_Needle::find_header('Content-Location: ', $response_headers);
 			
-			// Get person link to retreive person object
-			foreach($response_headers as $val) {
-				
-				// Get the needle in the haystack
-				$needle = 'Content-Location: ';
-				
-				// Find the position
-				$pos = strpos($val, $needle);
-				
-				// If haystack has needle set to true
-				if($pos !== false) {
-					$person_location = str_replace($needle, '', $val);					
-				}
-			}
+			#echo $person_location . '<br /><br />';
+						
+			#$person = $api_consumer->doRequest($person_location, $content_type);
 			
-			$person = $api_consumer->doRequest($person_location, $content_type);
+			// Set session to logged in
 			
-			$person = json_decode($person, TRUE);
-			//$person = $person
-			var_dump($person);
+			#$person = json_decode($person, TRUE);
+			#$person = $person['person'];
+			
+			$_session->set('login', true);
+			
+			return $api_consumer;			
+			
+			#return $person;
 			
 		}
 		
-	}
-	
-	public function after()
-	{
-		// Nothing in after for now
 	}
 }
