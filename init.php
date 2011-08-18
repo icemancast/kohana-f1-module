@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-/*
 $modules = Kohana::modules();
 
-Route::set('account', '(<controller>(/<action>(/<id>)))')
+
+Route::set('f1', '(<controller>(/<action>(/<realm>(/<request>(/<id>(/<alt_id>))))))')
 	->defaults(array(
-		'controller'	=> 'kohana_f1',
-		'action'		=> 'login',
+		'controller' => 'f1',
+		'action'     => 'index',
 	));
