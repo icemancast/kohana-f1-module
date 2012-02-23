@@ -50,7 +50,7 @@ return array(
 	'householdCommunications_update' => '/v1/Households/{householdID}/Communications/{id}',
 	'householdCommunications_delete' => '/v1/Households/{householdID}/Communications/{id}',
 
-	'peopleCommunications_list' => '/v1/People/{personID}/Communications',
+	'peopleCommunications_list' => '/v1/People/{personID}/Communications/',
 	'peopleCommunications_show' => '/v1/People/{personID}/Communications/{id}',
 	'peopleCommunications_new' => '/v1/People/{personID}/Communications/New',
 	'peopleCommunications_edit' => 'v1/People/{personID}/Communications/{id}/Edit',

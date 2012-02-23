@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die ('No direct script access');
 
-class Controller_Application extends Controller {
+abstract class Controller_Application extends Controller {
 	
 	protected $_session, $_f1config;
 	

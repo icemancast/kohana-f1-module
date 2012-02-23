@@ -20,9 +20,7 @@ class Kohana_F1
 	
 	public function authenticate_user($username, $password)
 	{
-		// Separate domain from username for authenticating			
-		
-		
+		// Separate domain from username for authenticating		
 		$this->f1_config = Kohana::config('f1');
 		
 		// Concatenate url string for request url
@@ -59,40 +57,37 @@ class Kohana_F1
 		
 		} else {
 			
-			$_session = Session::instance();
+			$api['data'] = $api_consumer;
+			$api['tokens'] = $tokens;
 			
-			$_session->set('access_token', $tokens[1]);
-			$_session->set('token_secret', $tokens[2]);
+			return $api;
 			
-			//$access_token = $tokens[1];
-			//$token_secret = $tokens[2];
+			// $_session = Session::instance();
+			// 			
+			// 			$_session->set('access_token', $tokens[1]);
+			// 			$_session->set('token_secret', $tokens[2]);
+			// 			
+			// 			// Load access_token and token_secret in session
+			// 			$api_consumer->initAccessToken($_session->get('access_token'), $_session->get('token_secret'));
+			// 						
+			// 			// Get response headers
+			// 			#$response_headers = $api_consumer->getResponseHeader();
+			// 						
+			// 			#$person_location = Helper_Needle::find_header('Content-Location: ', $response_headers);
+			// 			
+			// 			#echo $person_location . '<br /><br />';
+			// 						
+			// 			#$person = $api_consumer->doRequest($person_location, $content_type);
+			// 			
+			// 			// Set session to logged in
+			// 			
+			// 			#$person = json_decode($person, TRUE);
+			// 			#$person = $person['person'];
+			// 			
+			// 			$_session->set('login', true);
 			
-			// Load access_token and token_secret in session
-			// $api_consumer->initAccessToken($access_token, $token_secret);
-			$api_consumer->initAccessToken($_session->get('access_token'), $_session->get('token_secret'));
-			
-			#var_dump($api_consumer);
-			
-			// Get response headers
-			#$response_headers = $api_consumer->getResponseHeader();
-						
-			#$person_location = Helper_Needle::find_header('Content-Location: ', $response_headers);
-			
-			#echo $person_location . '<br /><br />';
-						
-			#$person = $api_consumer->doRequest($person_location, $content_type);
-			
-			// Set session to logged in
-			
-			#$person = json_decode($person, TRUE);
-			#$person = $person['person'];
-			
-			$_session->set('login', true);
-			
-			return $api_consumer;			
-			
-			#return $person;
-			
+			// return $api_consumer;			
+			 			
 		}
 		
 	}
