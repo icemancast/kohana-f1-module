@@ -47,10 +47,7 @@ class Kohana_F1
 			 * TODO: Change to view and notify website admin
 			 */
 			// Get response headers
-			$response_headers = $api_consumer->getResponseHeader();
-			
-			//var_dump($response_headers);
-			
+			$response_headers = $api_consumer->getResponseHeader();			
 			$status = Helper_Needle::find_header('HTTP/1.1 400 Bad Request ', $response_headers);
 			
 			throw new Kohana_Exception($status);

@@ -44,25 +44,34 @@ class Controller_F1 extends Controller_Application {
 		$realm_config = Kohana::config($realm);
 		
 		/**
-		* Grab url for request and start configuring the url for the request replacing vars inside the website.
+		* Grab url for request and start configuring the url for the request replacing vars inside the url.
 		*/
 		$config_url = preg_split($this->_f1config['var_pattern'], $realm_config[$request]);
-		preg_match_all($this->_f1config['var_pattern'], $realm_config[$request], $ids_in_string, PREG_PATTERN_ORDER);
+		
+		/**
+		 * Helper method to create url with config url, replace vars with params
+		 */
+		$request_url = Helper_Needle::create_url($this->_f1config['var_pattern'], $realm_config[$request], $param);
+		
+		// var_dump($config_url);
+		// exit();
+		
+		// preg_match_all($this->_f1config['var_pattern'], $realm_config[$request], $ids_in_string, PREG_PATTERN_ORDER);
 		
 		/**
 		* Set array to index 0 for extra array level added from preg_match_all
 		*/
-		$ids_in_string = $ids_in_string[0];
+		// $ids_in_string = $ids_in_string[0];
 		
 		/**
 		 * Check if {id} is in array and favor it first if not then go in sequence
 		 */
-		if(in_array('{id}', $ids_in_string))
-		{
+		// if(in_array('{id}', $ids_in_string))
+		// {
 			/**
 			 * Find which index is variable {id}
 			 */
-			$key_match = array_search('{id}', $ids_in_string);
+			// $key_match = array_search('{id}', $ids_in_string);
 			//$ids_in_string[$key_match] = $id;
 			
 			/*
@@ -71,28 +80,28 @@ class Controller_F1 extends Controller_Application {
 				LEFT OFF HERE
 				###################################
 			*/
-			foreach($ids_in_string as $some_id)
-			{
-				if($some_id != $ids_in_string[$key_match] && $some_id != $alt_var && $some_id != $alt_id)
-				{
-					$some_id = $alt_id;
-				}
-				elseif ($some_id != $ids_in_string[$key_match])
-				{
-					$some_id = $alt_var;
-				}
-				else
-				{
-					$some_id = $id;
-				}
+			// foreach($ids_in_string as $some_id)
+			// {
+				// if($some_id != $ids_in_string[$key_match] && $some_id != $alt_var && $some_id != $alt_id)
+				// {
+					// $some_id = $alt_id;
+				// }
+				// elseif ($some_id != $ids_in_string[$key_match])
+				// {
+					// $some_id = $alt_var;
+				// }
+				// else
+				// {
+					// $some_id = $id;
+				// }
 				
-				$ids_array[] = $some_id;
+				// $ids_array[] = $some_id;
 				
-			}
+			// }
 								
-		}
-		else
-		{
+		// }
+		// else
+		// {
 			
 			/**
 			 * If {id} not in string build id array
@@ -101,16 +110,16 @@ class Controller_F1 extends Controller_Application {
 			/*
 				TODO may need to just do ids in consecutive order will be easiest and best way
 			*/
-			for($i = 0; $i <= count($ids_in_string); $i++)
-			{
+			// for($i = 0; $i <= count($ids_in_string); $i++)
+			// {
 				
-			}
+			// }
 			
-			var_dump($ids_array);
+			// var_dump($ids_array);
 			
-		}
+		// }
 
-		$request_url = $this->_f1config['base_url'] . $request;
+		// $request_url = $this->_f1config['base_url'] . $request;
 		
 	}
 	
